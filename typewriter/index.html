@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .typewriter-container {
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .text, .typewriter-container div {
+            display: inline-block;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+
+        .typewriter-wrap {
+            width: 5px;
+        }
+
+        #typewriter {
+            color: #1152cc;
+            min-width: 50px;
+            text-align: left;
+        }
+
+        span {
+            border-right: .05em solid;
+            animation: caret 1s steps(1) infinite;
+        }
+
+        @keyframes caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="typewriter-container">
+    <div class="text">Typewriter effect using
+        <div class="typewriter-wrap">
+            <div id="typewriter"></div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded',(event) => {
+        const dataText = [ "HTML.", "CSS.", "JS."];
+        const deleteWriter = (text, i, fnCallback) => {
+            if (i >= 0 ) {
+                document.querySelector("#typewriter").innerHTML = `${text.substring(0, i)}<span aria-hidden="true"></span>`;
+                setTimeout(() => deleteWriter(text, i-1, fnCallback), 100);
+            }
+            else if (typeof fnCallback == 'function') {
+                setTimeout(fnCallback, 500);
+            }
+        };
+        const typeWriter = (text, i, fnCallback) => {
+            if (i < (text.length)) {
+                document.querySelector("#typewriter").innerHTML = `${text.substring(0, i+1)}<span aria-hidden="true"></span>`;
+                setTimeout(() => typeWriter(text, i + 1, fnCallback), 100);
+            }
+            else {
+                setTimeout(() => deleteWriter(text, text.length - 1, fnCallback), 1000);
+            }
+        };
+        const StartTextAnimation = (i) => {
+            if (typeof dataText[i] == 'undefined'){
+                setTimeout(() => {
+                    StartTextAnimation(0);
+                }, 3000);
+            }
+            else {
+                typeWriter(dataText[i], 0, () => {
+                    StartTextAnimation(i + 1);
+                });
+            }
+        };
+
+        StartTextAnimation(0);
+    });
+</script>
+</body>
+</html>
